@@ -1,6 +1,7 @@
 const expressAsyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
 const User = require('../models/userModel')
+const e = require('express')
 
 // @desc Register a new user
 // @route /api/users 
@@ -46,7 +47,18 @@ const registerUser = expressAsyncHandler(async (req, res) => {
 // @route /api/users/login 
 // @access Public
 const loginUser = expressAsyncHandler(async (req, res) => {
-    res.send('Login Route')
+    const {name, password, email} = req.body
+
+    const user = await User.findOne({email});
+
+    const compare = bcrypt.compareSync(password, user.password)
+    if (!compare) {
+        res.status(401)
+        throw new Error('Password is not correct!')
+    }
+    res.status(200).json({
+        message: 'Successfully loged in'
+    })
 })
 
 module.exports = {
