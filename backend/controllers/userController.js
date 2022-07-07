@@ -51,14 +51,17 @@ const loginUser = expressAsyncHandler(async (req, res) => {
 
     const user = await User.findOne({email});
 
-    const compare = bcrypt.compareSync(password, user.password)
-    if (!compare) {
+    const compare = await bcrypt.compare(password, user.password)
+    if (user && compare) {
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email
+        })
+    } else {
         res.status(401)
         throw new Error('Password is not correct!')
     }
-    res.status(200).json({
-        message: 'Successfully loged in'
-    })
 })
 
 module.exports = {
