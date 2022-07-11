@@ -16,8 +16,17 @@ const logout = () => {
     localStorage.removeItem('user');
 };
 
+const login = async userData => {
+    const response = await axios.post('api/users/login', userData);
+    if (response.data) {
+        // localStorage.setItem('user', JSON.stringify(userData));
+    }
+    return response.data;
+};
+
 const authService = {
     register,
     logout,
+    login,
 };
 export default authService;

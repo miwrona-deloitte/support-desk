@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { FaSignInAlt } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { login, reset } from '../features/auth/authSlice';
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -22,6 +23,16 @@ function Login() {
             [e.target.name]: e.target.value,
         }));
     };
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (user && isSuccess) {
+            navigate('/');
+        } else if (message) {
+            toast.error(message);
+        }
+        dispatch(reset());
+    }, [user, isSuccess, navigate, message, dispatch]);
     const onSubmit = e => {
         e.preventDefault();
 

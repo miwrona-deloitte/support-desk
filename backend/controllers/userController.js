@@ -48,8 +48,7 @@ const registerUser = expressAsyncHandler(async (req, res) => {
 // @route /api/users/login
 // @access Public
 const loginUser = expressAsyncHandler(async (req, res) => {
-    const { name, password, email } = req.body;
-
+    const { password, email } = req.body;
     const user = await User.findOne({ email });
 
     const compare = await bcrypt.compare(password, user.password);
