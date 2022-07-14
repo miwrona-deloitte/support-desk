@@ -22,7 +22,7 @@ const getTickets = expressAsyncHandler(async (req, res) => {
 
 // @desc Create a new ticket
 // @route POST /api/tickets
-// @access Public
+// @access Private
 const createTicket = expressAsyncHandler(async (req, res) => {
     const { product, description } = req.body;
 
@@ -39,4 +39,30 @@ const createTicket = expressAsyncHandler(async (req, res) => {
     res.status(201).json(ticket);
 });
 
-module.exports = { createTicket, getTickets };
+// @desc Get Ticket By id
+// @route GET /api/tickets/getTicketById:id
+// @access Private
+const getTicketById = expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+        res.status(401);
+        throw new Error('User not found');
+    }
+
+    const ticket = await Ticket.findById(req.params.id);
+
+    if (!ticket) {
+        res.status(404);
+        throw new Error('Ticket not found');
+    }
+
+    if (ticket.user.toString() !== req.user.id) {
+        res.status(401);
+        throw new Error('Not Authorized');
+    }
+
+    res.status(201).json(ticket);
+});
+
+module.exports = { createTicket, getTickets, getTicketById };
