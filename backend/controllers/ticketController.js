@@ -65,4 +65,23 @@ const getTicketById = expressAsyncHandler(async (req, res) => {
     res.status(201).json(ticket);
 });
 
-module.exports = { createTicket, getTickets, getTicketById };
+// @desc Delete By id
+// @route DELETE /api/tickets/:id
+// @access Private
+const deleteTicket = expressAsyncHandler(async (req, res) => {
+    const ticket = await Ticket.findById(req.params.id);
+    console.log(ticket);
+    if (!ticket) {
+        res.status(404);
+        throw new Error('Ticket not found');
+    }
+    try {
+        await Ticket.deleteOne(ticket._id);
+        res.status(200).json({ message: 'ticket removed successfullly' });
+    } catch (Error) {
+        res.status(400);
+        throw new Error('Couldnt find user with id:' + req.params.id);
+    }
+});
+
+module.exports = { createTicket, getTickets, getTicketById, deleteTicket };
