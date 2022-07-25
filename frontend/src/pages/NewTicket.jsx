@@ -11,8 +11,8 @@ function NewTicket() {
 
     const [name] = useState(user.name);
     const [email] = useState(user.emil);
-    const [product, setProduct] = useState('');
-    const [description, setDescription] = useState('');
+    const [product, setProduct] = useState('iPhone');
+    const [description, setDescription] = useState('description ...');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ function NewTicket() {
     }, [dispatch, isError, isSuccess, navigate, message]);
 
     const onSubmit = e => {
-        e.preventDefaule();
+        e.preventDefault();
         dispatch(createTicket({ product, description }));
     };
 
@@ -58,7 +58,7 @@ function NewTicket() {
                         <label htmlFor='product'>Product</label>
                         <select name='product' id='product' value={product} onChange={e => setProduct(e.target.value)}>
                             <option value='iPhone'>iPhone</option>
-                            <option value='Macbook Pro'>Macbook Pro</option>
+                            <option value='MacBook Pro'>Macbook Pro</option>
                             <option value='iMac'>iMac</option>
                             <option value='iPad'>iPad</option>
                         </select>
@@ -70,6 +70,8 @@ function NewTicket() {
                             name='description'
                             className='form-control'
                             placeholder='Description'
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
                         ></textarea>
                     </div>
                     <div className='form-group'>
