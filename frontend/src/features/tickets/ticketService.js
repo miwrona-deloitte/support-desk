@@ -14,7 +14,7 @@ export const createTicket = async (ticketData, token) => {
     return response.data;
 };
 
-export const getTickets = async (ticketId, token) => {
+export const getTicket = async (ticketId, token) => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ export const getTickets = async (ticketId, token) => {
     return response.data;
 };
 
-export const getTicket = async token => {
+export const getTickets = async token => {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
