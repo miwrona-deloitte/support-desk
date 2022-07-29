@@ -20,6 +20,17 @@ export const getNotes = createAsyncThunk('notes/getAll', async (ticketId, thunkA
     }
 });
 
+export const createNote = createAsyncThunk('notes/create', async (data, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        return await noteService.createNote(data.ticketId, data.note, token);
+    } catch (error) {
+        const message =
+            (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
 export const noteSlice = createSlice({
     name: 'note',
     initialState,
