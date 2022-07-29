@@ -63,7 +63,7 @@ function Ticket() {
     const closeModal = () => setModalIsOpen(false);
     const onNoteSubmit = e => {
         e.preventDefault();
-        dispatch(createNote({ note: { text: noteText }, ticketId: ticketId }));
+        dispatch(createNote({ noteText, ticketId }));
         closeModal();
     };
 
